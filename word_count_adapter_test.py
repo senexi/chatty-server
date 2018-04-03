@@ -36,7 +36,6 @@ def word_features(text):
     #features["first_letter"] = name[0].lower()
     fdist = get_word_frequency(text)
     for word, count in fdist.items():
-        print(word, count)
         if word in revelant_words:
             features["count({})".format(word)]= count
     return features

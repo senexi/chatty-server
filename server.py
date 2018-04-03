@@ -6,9 +6,14 @@ from flask_cors import CORS
 app = Flask(__name__)
 CORS(app)
 
-english_bot = ChatBot("Chatterbot", storage_adapter="chatterbot.storage.SQLStorageAdapter")
+english_bot = ChatBot("Chatterbot",
+    storage_adapter="chatterbot.storage.SQLStorageAdapter",
+    logic_adapters=[
+        "logic.ClassificationMatchAdapter"
+    ]    
+)
 
-english_bot.set_trainer(ChatterBotCorpusTrainer)
+# english_bot.set_trainer(ChatterBotCorpusTrainer)
 # english_bot.train("chatterbot.corpus.english")
 
 
