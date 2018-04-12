@@ -9,7 +9,8 @@ CORS(app)
 english_bot = ChatBot("Chatterbot",
     storage_adapter="chatterbot.storage.SQLStorageAdapter",
     logic_adapters=[
-        "logic.ClassificationMatchAdapter"
+        "logic.ClassificationNBAdapter",
+        "logic.ClassificationDTAdapter"
     ]    
 )
 

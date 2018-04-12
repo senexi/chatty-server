@@ -1,11 +1,12 @@
 from __future__ import unicode_literals
 from chatterbot.logic import LogicAdapter
 from .classification_data import train_set, responses
+from chatterbot.conversation import Statement
 import nltk
 
 
 
-class ClassificationMatchAdapter(LogicAdapter):
+class ClassificationNBAdapter(LogicAdapter):
     """
     A logic adapter that returns a response based on known responses to
     the closest matches to the input statement.
@@ -13,7 +14,7 @@ class ClassificationMatchAdapter(LogicAdapter):
     default_stopwords = set(nltk.corpus.stopwords.words('german'))
 
     def __init__(self, **kwargs):
-        super(ClassificationMatchAdapter, self).__init__(**kwargs)
+        super(ClassificationNBAdapter, self).__init__(**kwargs)
         featuresets = [(self.create_features(text), category) for (text, category) in train_set]
         print('start training')
         self.classifier = nltk.NaiveBayesClassifier.train(featuresets)
@@ -43,7 +44,7 @@ class ClassificationMatchAdapter(LogicAdapter):
         return True
 
     def process(self, input_statement):
-        self.response_statement = input_statement
+        self.response_statement = Statement(text="I don't know anything!")
         self.response_statement.confidence = 0.0
         input_set = self.create_features(input_statement.text)
         label = self.classifier.classify(input_set)
@@ -53,5 +54,5 @@ class ClassificationMatchAdapter(LogicAdapter):
         self.response_statement.confidence = confidence
         print(confidence)
         self.response_statement.text = responses[label]
-        print("response statement is '{}' with a confidence of {}".format(self.response_statement, confidence))
+        print("response statement is '{}' with a confidence of {} with Naive Bayes classifier".format(self.response_statement, confidence))
         return self.response_statement
